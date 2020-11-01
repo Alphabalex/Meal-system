@@ -1,0 +1,8 @@
+@page
+{
+	size:A4;
+}
+#accordionSidebar, #date{
+	display: none;
+	visibility: hidden;
+}
