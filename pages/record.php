@@ -21,6 +21,7 @@ while ($row=mysqli_fetch_array($count,MYSQLI_ASSOC)) {
             
             <div class="card-body">
               <div class="table-responsive">
+                <div id="alert"></div>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">        
                   <thead>
                       <tr>
@@ -42,19 +43,47 @@ while ($row=mysqli_fetch_array($count,MYSQLI_ASSOC)) {
                     $fetch= mysqli_query($db,$q1);
                     $records= mysqli_fetch_all($fetch,MYSQLI_ASSOC);               
                       foreach ($records as $record): ?>
-                                  <?php echo 
-                                  "<tr>
-                                    <td>".$record['Full_Name']."</td>
-                                    <td>".$record['Counts']."</td>
-                                    <td>".$record['Used']."</td>
-                                  </tr>";
-                                  ?>
+                              <?php $id=$record['id']; ?>
+                                  <tr>
+                                    <td><?php echo $record['Full_Name']; ?></td>
+                                    <td contenteditable="true" data-old_value="<?php echo $record['Counts'] ?>" onBlur="saveInlineEdit(this,'Counts','<?php echo $id; ?>','meals')" onClick="highlightEdit(this);"><?php echo $record['Counts']; ?></td>
+                                    <td><?php echo $record['Used']; ?></td>
+                                  </tr>
                       <?php endforeach; ?>                
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
+          <script>
+                function highlightEdit(editableObj) {
+                $(editableObj).css("background","midnightblue");
+                $(editableObj).css("color","white");
+              } 
+
+              function saveInlineEdit(editableObj,column,id,table) {
+                // no change change made then return false
+                if($(editableObj).attr('data-old_value') === editableObj.innerHTML)
+                return false;
+                // send ajax to update value
+                $(editableObj).css("background","#FFF url(loader.gif) no-repeat right");
+                $.ajax({
+                  url: "saveInlineEdit.php",
+                  cache: false,
+                  data:'table='+table+'&column='+column+'&value='+editableObj.innerHTML+'&id='+id,
+                  success: function(response)  {
+                    $('#alert').attr('class','alert alert-success');
+                    $('#alert').text(response);
+                    console.log(response);
+                    // set updated value as old value
+                    $(editableObj).attr('data-old_value',editableObj.innerHTML);
+                    $(editableObj).css("background","white");
+                    $(editableObj).css("color","midnightblue");     
+                  }          
+                 });
+              }
+
+          </script>
 
           <div class="card shadow mb-4">  
             <div class="card-body">

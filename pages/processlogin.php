@@ -47,7 +47,7 @@ if ($upass == ''){
                   </script>
              <?php        
            
-        }elseif ($_SESSION['TYPE']=='Staff'){
+        }elseif ($_SESSION['TYPE']=='Staff' || $_SESSION['TYPE']=='Guest'){
            
              ?>    <script type="text/javascript">
                       //then it will be redirected to index.php

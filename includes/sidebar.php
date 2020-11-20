@@ -133,7 +133,7 @@
       <li class="nav-item">
         <a class="nav-link" href="helpers.php">
           <i class="fas fa-fw fa-users"></i>
-          <span>Helpers</span></a>
+          <span>Helpers Record</span></a>
       </li>   
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
